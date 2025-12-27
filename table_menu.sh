@@ -38,40 +38,8 @@ while true; do
             ;;
 
         4)
-            read -p "Enter table name: " table
-            meta="$DB_PATH/$table.meta"
-            data="$DB_PATH/$table.txt"
-            if [ ! -f "$meta" ]; then
-                echo "Table not found!"
-                continue
-            fi
-
-            read -a cols < <(sed -n '1p' "$meta")
-            read -a types < <(sed -n '2p' "$meta")
-            pk=$(sed -n '3p' "$meta")
-
-            declare -a row
-            for i in "${!cols[@]}"; do
-                while true; do
-                    read -p "Enter value for ${cols[i]} (${types[i]}): " val
-                    # Type validation
-                    if [[ ${types[i]} == "int" && ! "$val" =~ ^-?[0-9]+$ ]]; then
-                        echo "Invalid integer!"
-                        continue
-                    fi
-                    # Primary key validation
-                    if [[ ${cols[i]} == "$pk" ]]; then
-                        if grep -q "^$val," "$data"; then
-                            echo "Primary key value already exists!"
-                            continue
-                        fi
-                    fi
-                    row[i]="$val"
-                    break
-                done
-            done
-            IFS=','; echo "${row[*]}" >> "$data"; unset IFS
-            echo "Row inserted successfully."
+           	source list_tables.sh "$DB_PATH"
+    		source insert_into_table.sh "$DB_PATH"
             ;;
 
         5)
