@@ -41,7 +41,7 @@ do
 
         if [ "$col_pk" = "PK" ]; then
             if [ -f "$DATA_FILE" ]; then
-                if cut -d',' -f1 "$DATA_FILE" | grep -x "$value" >/dev/null 2>&1; then
+                if cut -d'~' -f1 "$DATA_FILE" | grep -x "$value" >/dev/null 2>&1; then
                     echo "Primary key must be unique"
                     continue
                 fi
