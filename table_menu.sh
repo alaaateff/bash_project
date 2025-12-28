@@ -1,10 +1,11 @@
 #!/bin/bash
 
 db=$1
+table=$db
 DB_PATH="./databases/$db"
 clear
 while true; do
-    echo "===== Table Menu ($db) ====="
+    echo "===== Table Menu ($table) ====="
     echo "1. Create Table"
     echo "2. List Tables"
     echo "3. Drop Table"
