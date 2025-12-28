@@ -2,7 +2,7 @@
 
 DB_PATH="./databases"
 mkdir -p "$DB_PATH"
-
+clear
 while true; do
     echo
     echo "===== Main Menu ====="
@@ -17,31 +17,44 @@ while true; do
         1)
             read -p "Enter database name: " db
             if [ -d "$DB_PATH/$db" ]; then
+            	clear
                 echo "Database '$db' already exists!"
             else
+            	clear
                 mkdir -p "$DB_PATH/$db"
                 echo "Database '$db' created."
             fi
             ;;
         2)
+            clear
             echo "Databases:"
             ls "$DB_PATH"
             ;;
         3)
+            clear
+            echo "Databases:"
+            ls "$DB_PATH"
             read -p "Enter database name to connect: " db
             if [ -d "$DB_PATH/$db" ]; then
                 # Call table menu script
                 source table_menu.sh "$db"
+                clear
             else
+                clear
                 echo "Database not found!"
             fi
             ;;
         4)
+            clear
+            echo "Databases:"
+            ls "$DB_PATH"
             read -p "Enter database name to drop: " db
             if [ -d "$DB_PATH/$db" ]; then
                 rm -r "$DB_PATH/$db"
+                clear
                 echo "Database '$db' deleted."
             else
+                clear
                 echo "Database not found!"
             fi
             ;;
@@ -50,6 +63,7 @@ while true; do
             exit 0
             ;;
         *)
+            clear
             echo "Invalid choice!"
             ;;
     esac
