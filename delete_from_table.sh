@@ -1,6 +1,7 @@
 db=$1
-echo "enter table name : "
+echo "enter table name or (:q) to return to table menu: "
 read tname
+[ "$tname" = ":q" ] && clear && return 
 if [ ! -f "$db/$tname.data" ] || [ ! -f  "$db/$tname.meta" ]
 then
         echo "this table doesn't exist"

@@ -1,6 +1,7 @@
 db=$1
-echo "enter the table name :"
+echo "enter the table name or (:q) to return to table menu: :"
 read tname
+[ "$tname" = ":q" ] && clear && return 
 if [ -f "$db/$tname.data" ]
 then
 	clear

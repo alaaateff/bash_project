@@ -2,9 +2,9 @@
 
 DB_PATH=$1
 Flag_Change=0
-echo "Table name:"
+echo "Table or (:q) to return to table menu:"
 read table
-
+[ "$table" = ":q" ] && clear && return 
 META="$DB_PATH/$table.meta"
 DATA="$DB_PATH/$table.data"
 
