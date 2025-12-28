@@ -87,45 +87,8 @@ while true; do
             ;;
 
         7)
-            read -p "Enter table name: " table
-            data="$DB_PATH/$table.txt"
-            meta="$DB_PATH/$table.meta"
-            if [ ! -f "$data" ]; then
-                echo "Table not found!"
-                continue
-            fi
-
-            read -a cols < <(sed -n '1p' "$meta")
-            read -a types < <(sed -n '2p' "$meta")
-            pk=$(sed -n '3p' "$meta")
-            read -p "Enter $pk value to update: " val
-
-            # Find row number
-            rownum=$(grep -n "^$val," "$data" | cut -d: -f1)
-            if [ -z "$rownum" ]; then
-                echo "Row not found!"
-                continue
-            fi
-
-            declare -a newrow
-            for i in "${!cols[@]}"; do
-                while true; do
-                    read -p "Enter new value for ${cols[i]} (${types[i]}): " v
-                    if [[ ${types[i]} == "int" && ! "$v" =~ ^-?[0-9]+$ ]]; then
-                        echo "Invalid integer!"
-                        continue
-                    fi
-                    if [[ ${cols[i]} == "$pk" && "$v" != "$val" && $(grep -c "^$v," "$data") -gt 0 ]]; then
-                        echo "Primary key value already exists!"
-                        continue
-                    fi
-                    newrow[i]="$v"
-                    break
-                done
-            done
-            IFS=','; newline="${newrow[*]}"; unset IFS
-            sed -i "${rownum}s/.*/$newline/" "$data"
-            echo "Row updated."
+	    source list_tables.sh "$DB_PATH"
+    	    source update_table.sh "$DB_PATH"
             ;;
 
         8)
