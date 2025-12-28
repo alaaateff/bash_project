@@ -1,5 +1,6 @@
 #!/bin/bash
 clear
+echo "Current tables"
 db=$1
 
 if ls  $db/*.data >/dev/null 2>&1; then

@@ -1,5 +1,5 @@
 #!/bin/bash
-clear
+
 db=$1
 
 echo "enter table name : "
@@ -8,8 +8,9 @@ count=0
 for files in `ls -f $db`
 do
 	files=$(basename "$files")
-        if [ "$files"  = "$tname" ]
+        if [ "$files"  = "$tname.meta" ]
         then
+        	clear
                 echo "this table exists"
                 count=$((count+1))
 		break
@@ -45,15 +46,18 @@ done
 echo "enter your another column and if you finish  enter done: "
 read col
 done
-fi
 echo "which column you want to be primary key of the table ?"
 read pk
-while ! grep "$pk" $db/$tname.meta >/dev/null
+while ! grep "^$pk" "$db/$tname.meta" >/dev/null
 do
 	echo "this column isn't exist! enter another column :"
-	read pk
+	read pk 
 done
 sed -i "/^$pk:/ s/$/:PK/" $db/$tname.meta
+clear 
+echo "table created"
+fi
+
 
 
 

@@ -4,7 +4,6 @@ db=$1
 DB_PATH="./databases/$db"
 clear
 while true; do
-    echo
     echo "===== Table Menu ($db) ====="
     echo "1. Create Table"
     echo "2. List Tables"
@@ -18,9 +17,9 @@ while true; do
 
     case $choice in
         1)
+        	source list_tables.sh  "$DB_PATH"
 		source create_table.sh  "$DB_PATH"
-		clear
-		echo "Table created"
+		
             ;;
 
         2)
@@ -43,47 +42,13 @@ while true; do
             ;;
 
         5)
-            read -p "Enter table name: " table
-            data="$DB_PATH/$table.txt"
-            meta="$DB_PATH/$table.meta"
-            if [ ! -f "$data" ]; then
-                echo "Table not found!"
-                continue
-            fi
-            read -a cols < <(sed -n '1p' "$meta")
-            # Print header
-            for c in "${cols[@]}"; do
-                printf "%-15s" "$c"
-            done
-            echo
-            printf '%0.s-' {1..80}; echo
-            # Print rows
-            while IFS=',' read -ra row; do
-                for v in "${row[@]}"; do
-                    printf "%-15s" "$v"
-                done
-                echo
-            done < "$data"
+        	source list_tables.sh "$DB_PATH"
+            	source select_from_table.sh "$DB_PATH"
             ;;
 
         6)
-            read -p "Enter table name: " table
-            data="$DB_PATH/$table.txt"
-            meta="$DB_PATH/$table.meta"
-            if [ ! -f "$data" ]; then
-                echo "Table not found!"
-                continue
-            fi
-
-            read -a cols < <(sed -n '1p' "$meta")
-            pk=$(sed -n '3p' "$meta")
-            read -p "Enter $pk value to delete: " val
-            if grep -q "^$val," "$data"; then
-                grep -v "^$val," "$data" > "$data.tmp" && mv "$data.tmp" "$data"
-                echo "Row deleted."
-            else
-                echo "Row not found!"
-            fi
+        	source list_tables.sh "$DB_PATH"
+            	source delete_from_table.sh "$DB_PATH"
             ;;
 
         7)
@@ -92,7 +57,7 @@ while true; do
             ;;
 
         8)
-            break
+            return
             ;;
 
         *)

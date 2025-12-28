@@ -8,7 +8,8 @@ read table
 META="$DB_PATH/$table.meta"
 DATA="$DB_PATH/$table.data"
 
-if [ ! -f "$META" ]; then
+if [ ! -f "$META" ]; then 
+    clear
     echo "Table not found"
     return
 fi
@@ -38,8 +39,21 @@ do
     echo "$i) $c"
     i=$((i+1))
 done
-
 read col_index
+
+while [ "$col_index" -ge "$i" ] || [ "$col_index" -lt 0 ]
+do
+clear
+echo "wrong choice"
+echo "Choose column to search by:"
+i=0
+for c in "${cols[@]}"
+do
+    echo "$i) $c"
+    i=$((i+1))
+done
+read col_index
+done
 
 clear
 echo "Enter value to search:"

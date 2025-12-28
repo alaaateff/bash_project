@@ -3,6 +3,9 @@ echo "enter the table name :"
 read tname
 if [ -f "$db/$tname.data" ]
 then
+	clear
+	echo "these are the columns in $tname :"
+	awk -F: '{print $1}' $db/$tname.meta
 	echo "enter the column names (comma-separated) :"
 	read cols
 	if [ "$cols" = "*" ]
@@ -15,8 +18,9 @@ then
         for c in "${col_arr[@]}"
         do
             if ! grep -q "^$c:" "$db/$tname.meta"; then
+                clear
                 echo "column $c doesn't exist"
-                exit
+                return
             fi
             counter=1
             while read line; do
@@ -49,17 +53,19 @@ then
         done < "$db/$tname.meta"
 
 	if [ -z "$field_number" ]; then
-            echo "column '$col' not found in meta file"
-            exit 1
+	    clear
+            echo "column '$col' not found "
+            return 
         fi
 	fi
 
 else
+	clear
 	echo "table $tname doesn't exist"
-	exit
+	return
 fi
 found=false
-
+clear
 while read line
 do
 	match=true

@@ -6,30 +6,41 @@ then
         echo "this table doesn't exist"
         exit
 else
+	clear
         echo -e "\nChoose delete option:"
         select choice in "delete whole table" "delete row based on primary key" "delete rows based on specific value of column "
         do
         case $REPLY in
-                1) rm $db/$tname.data
-                        echo "$db/$tname table deleted successfully"
+                1) 
+                	touch "$db/temp"
+                	mv "$db/temp" "$db/$tname.data" 
+                	clear
+                        echo "$tname table deleted successfully"
                         break;;
                 2) pk=$(awk -F: '$3 !="" { print $1; exit}' $db/$tname.meta)
                         echo "primary key is $pk , enter the value you want : "
                         read val
                         original_lines=$(wc -l < "$db/$tname.data")
                         pk_field=$(awk -F: -v pk="$pk" '$1==pk { print NR }' $db/$tname.meta)
-                        awk -F~ -v f=$pk_field -v v="$val" '$f != v { print }'$db/$tname.data > $db/newfile
+                        awk -F~ -v f=$pk_field -v v="$val" '$f != v { print }' $db/$tname.data > $db/newfile
                         new_lines=$(wc -l < $db/newfile)
                         if [ "$new_lines" -eq "$original_lines" ]; then
-                                 echo "No rows found , nothing deleted."
+                        	  clear
+                                  echo "No rows found , nothing deleted."
+                                  echo "1)delete whole table" 
+                                  echo "2)delete row based on primary key" 
+                                  echo "3)delete rows based on specific value of column"
                                   rm $db/newfile
                         else
                                 mv $db/newfile $db/$tname.data
+                                clear
                                 echo "Rows deleted successfully"
                                 break
                         fi
                         ;;
-                3) echo "these are the columns in $tname :"
+                3) 
+                	clear
+                	echo "these are the columns in $tname :"
                         awk -F: '{print $1}' $db/$tname.meta
                         echo "enter the column you want to delete from"
                         read col
@@ -38,6 +49,7 @@ else
                         original_lines=$(wc -l < "$db/$tname.data")
                         col_field=$(awk -F: -v col="$col" '$1==col { print NR }' $db/$tname.meta)
                         if [ -z "$col_field" ]; then
+                               clear
                                echo "Column '$col' does not exist!"
                                break
                         fi
@@ -48,6 +60,7 @@ else
                                   rm $db/newfile
                         else
                                 mv $db/newfile $db/$tname.data
+                                clear
                                 echo "Rows deleted successfully"
                                 break
 
@@ -57,6 +70,7 @@ else
                         ;;
         esac
 done
+
 fi
 
 
