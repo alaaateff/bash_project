@@ -2,9 +2,9 @@
 
 DB_PATH=$1
 
-echo "Enter table name to insert into:"
+echo "Enter table name to insert into or (:q) to return to table menu:"
 read table
-
+[ "$table" = ":q" ] && clear && return 
 META_FILE="$DB_PATH/$table.meta"
 DATA_FILE="$DB_PATH/$table.data"
 

@@ -1,10 +1,13 @@
 db=$1
 
-echo "enter table name you want to drop :"
+echo "enter table name you want to drop or (:q) to return to main menu:"
 read table
+[ "$table" = ":q" ] && clear && return 
 while [ ! -f "$db/$table.data" ]
 do
 	echo "this table isn't exist! enter another one : "
 	read table
 done
 rm "$db/$table.data" "$db/$table.meta"
+clear
+echo "Table dropped"

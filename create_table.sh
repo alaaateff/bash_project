@@ -2,8 +2,9 @@
 
 db=$1
 
-echo "enter table name : "
+echo "enter table name or (:q) to return to table menu: "
 read tname
+[ "$tname" = ":q" ] && clear && return 
 count=0
 for files in `ls -f $db`
 do

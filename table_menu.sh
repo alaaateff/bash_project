@@ -1,11 +1,11 @@
 #!/bin/bash
 
 db=$1
-table=$db
+unique_name=$db
 DB_PATH="./databases/$db"
 clear
 while true; do
-    echo "===== Table Menu ($table) ====="
+    echo "===== Table Menu ($unique_name) ====="
     echo "1. Create Table"
     echo "2. List Tables"
     echo "3. Drop Table"
@@ -32,8 +32,7 @@ while true; do
 	
 		source list_tables.sh  "$DB_PATH"
 		source drop_table.sh  "$DB_PATH"
-		clear
-		echo "Table dropped"
+		
 
             ;;
 
