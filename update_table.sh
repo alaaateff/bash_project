@@ -1,7 +1,7 @@
 #!/bin/bash
 
 DB_PATH=$1
-
+Flag_Change=0
 echo "Table name:"
 read table
 
@@ -65,7 +65,7 @@ tmp="$DATA.tmp"
 while IFS='~' read -a row
 do
     if [ "${row[$col_index]}" = "$search_value" ]; then
-
+	Flag_Change=1
         newline=""
 
         for i in "${!cols[@]}"
@@ -117,8 +117,13 @@ do
 done < "$DATA"
 
 mv "$tmp" "$DATA"
+if [ $Flag_Change -eq 1 ]; then
 clear
 echo "Update finished"
+else
+clear
+echo "Value not found!"
+fi
 
 
 
